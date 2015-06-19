@@ -62,8 +62,8 @@ class BuildRoot:
             print "    '" + item + "'"
         print "========================================="
 
-    def get_config_obj(sef, build_root_top, project_ini, output_top):
-        return Configs(build_root_top, project_ini, output_top)
+    def get_config_obj(self, buildscript, build_root_top, project_ini, output_top):
+        return Configs(buildscript, build_root_top, project_ini, output_top)
 
     def build_action(self, action, config_obj):
         method_table_in_project = config_obj.get_method_table()

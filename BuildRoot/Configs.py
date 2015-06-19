@@ -8,6 +8,7 @@ class Configs(Singleton):
             }
     dicts = {
         "BUILDROOT_TOP"			:"",
+        "BUILDSCRIPT"			:"",
         "PROJECT_TOP"			:"",
         "OUTPUT_TOP"			:"",
         "OUTPUT_LINK"			:"",
@@ -28,6 +29,9 @@ class Configs(Singleton):
     '''
     def get_buildroot_top(self):
         return self.dicts["BUILDROOT_TOP"]
+
+    def get_buildscript(self):
+        return self.dicts["BUILDSCRIPT"]
 
     def get_project_top(self):
         return self.dicts["PROJECT_TOP"]
@@ -95,13 +99,13 @@ class Configs(Singleton):
 
         return rootfs_list
 
-
-    def __init__(self, buildroot_top, project_config, output_name):
+    def _constructor(self, buildscript, buildroot_top, project_config, output_name):
         buildroot_folder = os.path.abspath(buildroot_top + os.sep + "..") + os.sep
         self.dicts["OUTPUT_NAME"] = output_name
+        self.dicts["BUILDSCRIPT"] = os.path.abspath(buildscript)
         self.dicts["BUILDROOT_TOP"] = os.path.abspath(buildroot_top)
         self.dicts["PROJECT_CONFIG"] = os.path.abspath(project_config)
-	self.dicts["PROJECT_TOP"] = os.path.abspath(os.path.dirname(project_config))
+        self.dicts["PROJECT_TOP"] = os.path.abspath(os.path.dirname(project_config))
         self.dicts["OUTPUT_TOP"] = os.path.abspath(buildroot_top + os.sep + output_name)
         self.dicts["OUTPUT_LINK"] = os.path.abspath(buildroot_folder + os.sep + ".." + os.sep + output_name)
 
@@ -138,9 +142,13 @@ class Configs(Singleton):
                     supported_method_in_project[name] = value
 
             self.dicts["METHOD_TABLE"] = supported_method_in_project
-            
+
         except ConfigParser.Error, e:
             print e
+
+
+    def __init__(self, buildscript, buildroot_top, project_config, output_name):
+        self._constructor(buildscript, buildroot_top, project_config, output_name)
 
     def get_configs(self):
         return self.dicts
